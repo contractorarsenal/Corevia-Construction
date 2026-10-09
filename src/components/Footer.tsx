@@ -9,13 +9,15 @@ export default function Footer() {
       <div className="mx-auto max-w-300 px-5 sm:px-8">
         <div className="flex flex-col gap-10 sm:flex-row sm:justify-between">
           <div>
-            <img
-              src={logo}
-              alt={business.name}
-              width={168}
-              height={133}
-              className="h-10 w-auto"
-            />
+            <span className="inline-flex bg-paper p-1.5">
+              <img
+                src={logo}
+                alt={business.name}
+                width={168}
+                height={133}
+                className="h-9 w-auto"
+              />
+            </span>
             <p className="mt-4 text-sm text-paper">{business.name}</p>
             <p className="mt-1 text-sm">{business.address.line1}</p>
             <p className="text-sm">{business.address.line2}</p>
@@ -23,10 +25,10 @@ export default function Footer() {
 
           <div className="space-y-1.5 text-sm">
             <a href={business.phoneHref} className="block hover:text-paper">
-              {business.phone}
+              Call Our Team
             </a>
             <a href={business.emailHref} className="block hover:text-paper">
-              {business.email}
+              Email Us
             </a>
             <a
               href={business.facebook}

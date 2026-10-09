@@ -1,3 +1,5 @@
+import { useState } from "react";
+import type { ProjectType } from "./data/business";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Gallery from "./components/Gallery";
@@ -7,15 +9,18 @@ import Hero from "./components/Hero";
 import Services from "./components/Services";
 
 function App() {
+  const [requestedProjectType, setRequestedProjectType] =
+    useState<ProjectType | null>(null);
+
   return (
     <div className="min-h-screen bg-paper text-ink">
       <Header />
       <main>
         <Hero />
-        <Services />
+        <Services onSelectProject={setRequestedProjectType} />
         <Gallery />
         <About />
-        <Contact />
+        <Contact presetProjectType={requestedProjectType} />
       </main>
       <Footer />
     </div>

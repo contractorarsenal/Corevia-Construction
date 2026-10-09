@@ -71,7 +71,7 @@ export default function Lightbox({
       className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/95 p-4 sm:p-8"
       role="dialog"
       aria-modal="true"
-      aria-label={`${image.caption} — image ${index + 1} of ${images.length}`}
+      aria-label={`${image.caption}, image ${index + 1} of ${images.length}`}
       ref={dialogRef}
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
@@ -142,13 +142,13 @@ export default function Lightbox({
         <img
           src={image.src}
           alt={image.alt}
-          className="max-h-[75vh] w-auto max-w-full object-contain"
+          className="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain"
         />
         <figcaption className="mt-4 text-sm text-paper/80">
           {image.caption}
           <span className="text-paper/50">
             {" "}
-            — {index + 1} of {images.length}
+            (image {index + 1} of {images.length})
           </span>
         </figcaption>
       </figure>

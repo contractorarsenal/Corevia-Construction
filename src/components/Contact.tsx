@@ -1,52 +1,93 @@
 import { useState, type FormEvent } from "react";
-import { business, projectTypes } from "../data/business";
+import {
+  business,
+  projectTypes,
+  timingOptions,
+  type ProjectType,
+} from "../data/business";
 
 type FormState = {
+  projectType: ProjectType | "";
+  city: string;
+  details: string;
+  timing: string;
   name: string;
   phone: string;
   email: string;
-  projectType: string;
-  details: string;
 };
 
 const initialState: FormState = {
+  projectType: "",
+  city: "",
+  details: "",
+  timing: "",
   name: "",
   phone: "",
   email: "",
-  projectType: "",
-  details: "",
 };
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export default function Contact() {
+const fieldClasses =
+  "w-full border border-line bg-paper px-4 py-3 text-ink placeholder:text-stone focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
+
+type ContactProps = {
+  presetProjectType: ProjectType | null;
+};
+
+export default function Contact({ presetProjectType }: ContactProps) {
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [lastPreset, setLastPreset] = useState<ProjectType | null>(null);
+
+  if (presetProjectType && presetProjectType !== lastPreset) {
+    setLastPreset(presetProjectType);
+    setForm((prev) => ({ ...prev, projectType: presetProjectType }));
+    setSubmitted(false);
+    setStep(1);
+  }
 
   const update =
     (field: keyof FormState) =>
     (
       event: React.ChangeEvent<
-        HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+        HTMLInputElement | HTMLTextAreaElement
       >,
     ) => {
       setForm((prev) => ({ ...prev, [field]: event.target.value }));
     };
+
+  const goToStep1 = () => setStep(1);
+  const goToStep2 = () => {
+    if (!form.projectType) {
+      setErrors({ projectType: "Please choose a project type." });
+      return;
+    }
+    setErrors({});
+    setStep(2);
+  };
+  const goToStep3 = () => {
+    const nextErrors: Partial<Record<keyof FormState, string>> = {};
+    if (!form.city.trim()) nextErrors.city = "Please enter a city or ZIP code.";
+    if (!form.details.trim())
+      nextErrors.details = "Please share a few project details.";
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length === 0) setStep(3);
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const nextErrors: Partial<Record<keyof FormState, string>> = {};
     if (!form.name.trim()) nextErrors.name = "Please enter your name.";
-    if (!form.phone.trim()) nextErrors.phone = "Please enter a phone number.";
-    if (!form.email.trim()) {
-      nextErrors.email = "Please enter an email address.";
-    } else if (!emailPattern.test(form.email)) {
+    if (!form.phone.trim() && !form.email.trim()) {
+      nextErrors.phone = "Please enter a phone number or email address.";
+      nextErrors.email = "Please enter a phone number or email address.";
+    } else if (form.email.trim() && !emailPattern.test(form.email)) {
       nextErrors.email = "Please enter a valid email address.";
     }
-    if (!form.projectType) nextErrors.projectType = "Please select a project type.";
-    if (!form.details.trim()) nextErrors.details = "Please share a few project details.";
 
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length === 0) {
@@ -54,230 +95,368 @@ export default function Contact() {
     }
   };
 
-  const fieldClasses =
-    "w-full border border-paper/25 bg-paper/8 px-4 py-3 text-paper placeholder:text-paper/45 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40";
+  const resetForm = () => {
+    setSubmitted(false);
+    setForm(initialState);
+    setErrors({});
+    setStep(1);
+  };
 
   return (
-    <section id="contact" className="scroll-mt-18 bg-ink py-18 text-paper sm:py-24">
+    <section id="contact" className="scroll-mt-20 bg-ink py-18 sm:py-24">
       <div className="mx-auto max-w-300 px-5 sm:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div>
             <h2 className="text-3xl font-bold leading-snug text-paper sm:text-4xl">
-              Tell Us About Your Project
+              Let&rsquo;s Put Your Project in Motion.
             </h2>
             <p className="mt-5 max-w-sm text-base leading-relaxed text-paper/80">
-              Located in King or Pierce County? Share a few details about
-              the work you have in mind.
+              Tell us what you have in mind. Start with the type of
+              project, share a few details, and let&rsquo;s take it from
+              there.
             </p>
 
-            <dl className="mt-10 space-y-5 text-sm">
-              <div>
-                <dt className="text-paper/55">Phone</dt>
-                <dd className="mt-1">
-                  <a
-                    href={business.phoneHref}
-                    className="text-base font-medium text-paper underline decoration-paper/30 underline-offset-4 hover:decoration-paper"
-                  >
-                    {business.phone}
-                  </a>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-paper/55">Email</dt>
-                <dd className="mt-1">
-                  <a
-                    href={business.emailHref}
-                    className="text-base font-medium text-paper underline decoration-paper/30 underline-offset-4 hover:decoration-paper"
-                  >
-                    {business.email}
-                  </a>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-paper/55">Based in</dt>
-                <dd className="mt-1 text-base text-paper">
-                  Tacoma, Washington
-                </dd>
-              </div>
-              <div>
-                <dt className="text-paper/55">Serving</dt>
-                <dd className="mt-1 text-base text-paper">
-                  King County and Pierce County
-                </dd>
-              </div>
-            </dl>
+            <div className="mt-10 space-y-3">
+              <a
+                href={business.phoneHref}
+                className="inline-flex w-fit items-center gap-2 border border-paper/25 px-5 py-3 text-sm font-medium text-paper transition-colors duration-300 hover:border-paper/50"
+              >
+                Call Our Team
+              </a>
+              <a
+                href={business.emailHref}
+                className="block w-fit items-center gap-2 border border-paper/25 px-5 py-3 text-sm font-medium text-paper transition-colors duration-300 hover:border-paper/50"
+              >
+                Email Us
+              </a>
+            </div>
           </div>
 
-          <div>
+          <div className="bg-paper p-6 sm:p-8">
             {submitted ? (
-              <div
-                role="status"
-                className="border border-paper/20 bg-paper/5 p-6 sm:p-8"
-              >
-                <h3 className="text-xl font-semibold text-paper">
+              <div role="status">
+                <h3 className="text-xl font-semibold text-ink">
                   This is a demo form.
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-paper/80">
-                  No request was actually sent. To discuss a real project,
-                  please reach out directly:
+                <p className="mt-3 text-sm leading-relaxed text-ink-soft">
+                  No inquiry was actually sent. To discuss a real project,
+                  please reach out directly.
                 </p>
                 <div className="mt-5 space-y-2 text-sm">
                   <a
                     href={business.phoneHref}
-                    className="block w-fit text-paper underline decoration-paper/30 underline-offset-4"
+                    className="block w-fit text-accent underline underline-offset-4"
                   >
-                    Call Now — {business.phone}
+                    Call Our Team
                   </a>
                   <a
                     href={business.emailHref}
-                    className="block w-fit text-paper underline decoration-paper/30 underline-offset-4"
+                    className="block w-fit text-accent underline underline-offset-4"
                   >
-                    Email Us — {business.email}
+                    Email Us
                   </a>
                 </div>
                 <button
                   type="button"
-                  onClick={() => {
-                    setSubmitted(false);
-                    setForm(initialState);
-                  }}
-                  className="mt-6 text-sm text-paper/70 underline underline-offset-4 hover:text-paper"
+                  onClick={resetForm}
+                  className="mt-6 text-sm text-ink-soft underline underline-offset-4 hover:text-ink"
                 >
-                  Edit and fill out again
+                  Start a new project inquiry
                 </button>
               </div>
             ) : (
-              <form noValidate onSubmit={handleSubmit} className="space-y-5">
-                <p className="text-xs text-paper/60">
-                  Demo form. Please call or email to discuss your project.
+              <form noValidate onSubmit={handleSubmit}>
+                <div aria-live="polite" className="mb-6 flex items-center justify-between">
+                  <p className="text-sm font-medium text-stone">
+                    Step {step} of 3
+                  </p>
+                  <div className="h-1 w-24 overflow-hidden bg-paper-dim">
+                    <div
+                      className="h-full bg-accent transition-all duration-300"
+                      style={{ width: `${(step / 3) * 100}%` }}
+                    />
+                  </div>
+                </div>
+
+                <p className="mb-5 text-xs text-stone">
+                  Demo form. No backend is connected. Please call or email
+                  to discuss your project.
                 </p>
 
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                  <div>
-                    <label htmlFor="name" className="block text-sm text-paper/80">
-                      Name
-                    </label>
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      autoComplete="name"
-                      value={form.name}
-                      onChange={update("name")}
-                      aria-invalid={Boolean(errors.name)}
-                      aria-describedby={errors.name ? "name-error" : undefined}
-                      className={`mt-2 ${fieldClasses}`}
-                    />
-                    {errors.name && (
-                      <p id="name-error" className="mt-1.5 text-xs text-amber-300">
-                        {errors.name}
+                {step === 1 && (
+                  <fieldset>
+                    <legend className="text-lg font-semibold text-ink">
+                      Your Project
+                    </legend>
+                    <p className="mt-1 text-sm text-ink-soft">
+                      What kind of project are you planning?
+                    </p>
+
+                    <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                      {projectTypes.map((type) => (
+                        <label key={type} className="relative block cursor-pointer">
+                          <input
+                            type="radio"
+                            name="projectType"
+                            value={type}
+                            checked={form.projectType === type}
+                            onChange={() =>
+                              setForm((prev) => ({ ...prev, projectType: type }))
+                            }
+                            className="peer sr-only"
+                          />
+                          <span className="block border border-line px-3 py-3 text-center text-sm font-medium text-ink-soft transition-colors duration-300 peer-checked:border-accent peer-checked:bg-accent peer-checked:text-paper peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2">
+                            {type}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                    {errors.projectType && (
+                      <p role="alert" className="mt-3 text-sm text-red-700">
+                        {errors.projectType}
                       </p>
                     )}
-                  </div>
 
-                  <div>
-                    <label htmlFor="phone" className="block text-sm text-paper/80">
-                      Phone
-                    </label>
-                    <input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      autoComplete="tel"
-                      value={form.phone}
-                      onChange={update("phone")}
-                      aria-invalid={Boolean(errors.phone)}
-                      aria-describedby={errors.phone ? "phone-error" : undefined}
-                      className={`mt-2 ${fieldClasses}`}
-                    />
-                    {errors.phone && (
-                      <p id="phone-error" className="mt-1.5 text-xs text-amber-300">
-                        {errors.phone}
-                      </p>
-                    )}
-                  </div>
-                </div>
+                    <button
+                      type="button"
+                      onClick={goToStep2}
+                      className="mt-7 w-full bg-accent px-7 py-3.5 text-sm font-semibold text-paper transition-colors duration-300 hover:bg-accent-dark sm:w-auto"
+                    >
+                      Next
+                    </button>
+                  </fieldset>
+                )}
 
-                <div>
-                  <label htmlFor="email" className="block text-sm text-paper/80">
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    value={form.email}
-                    onChange={update("email")}
-                    aria-invalid={Boolean(errors.email)}
-                    aria-describedby={errors.email ? "email-error" : undefined}
-                    className={`mt-2 ${fieldClasses}`}
-                  />
-                  {errors.email && (
-                    <p id="email-error" className="mt-1.5 text-xs text-amber-300">
-                      {errors.email}
-                    </p>
-                  )}
-                </div>
+                {step === 2 && (
+                  <fieldset>
+                    <legend className="text-lg font-semibold text-ink">
+                      The Details
+                    </legend>
 
-                <div>
-                  <label htmlFor="projectType" className="block text-sm text-paper/80">
-                    Project type
-                  </label>
-                  <select
-                    id="projectType"
-                    name="projectType"
-                    value={form.projectType}
-                    onChange={update("projectType")}
-                    aria-invalid={Boolean(errors.projectType)}
-                    aria-describedby={
-                      errors.projectType ? "projectType-error" : undefined
-                    }
-                    className={`mt-2 ${fieldClasses} bg-ink`}
-                  >
-                    <option value="" disabled className="bg-paper text-ink">
-                      Select a project type
-                    </option>
-                    {projectTypes.map((type) => (
-                      <option key={type} value={type} className="bg-paper text-ink">
-                        {type}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.projectType && (
-                    <p id="projectType-error" className="mt-1.5 text-xs text-amber-300">
-                      {errors.projectType}
-                    </p>
-                  )}
-                </div>
+                    <div className="mt-5 space-y-5">
+                      <div>
+                        <label htmlFor="city" className="block text-sm text-ink-soft">
+                          City or ZIP code
+                        </label>
+                        <input
+                          id="city"
+                          name="city"
+                          type="text"
+                          autoComplete="address-level2"
+                          value={form.city}
+                          onChange={update("city")}
+                          aria-invalid={Boolean(errors.city)}
+                          aria-describedby={errors.city ? "city-error" : undefined}
+                          className={`mt-2 ${fieldClasses}`}
+                        />
+                        {errors.city && (
+                          <p id="city-error" role="alert" className="mt-1.5 text-xs text-red-700">
+                            {errors.city}
+                          </p>
+                        )}
+                      </div>
 
-                <div>
-                  <label htmlFor="details" className="block text-sm text-paper/80">
-                    Project details
-                  </label>
-                  <textarea
-                    id="details"
-                    name="details"
-                    rows={4}
-                    value={form.details}
-                    onChange={update("details")}
-                    aria-invalid={Boolean(errors.details)}
-                    aria-describedby={errors.details ? "details-error" : undefined}
-                    className={`mt-2 ${fieldClasses} resize-none`}
-                  />
-                  {errors.details && (
-                    <p id="details-error" className="mt-1.5 text-xs text-amber-300">
-                      {errors.details}
-                    </p>
-                  )}
-                </div>
+                      <div>
+                        <label htmlFor="details" className="block text-sm text-ink-soft">
+                          Project description
+                        </label>
+                        <textarea
+                          id="details"
+                          name="details"
+                          rows={4}
+                          value={form.details}
+                          onChange={update("details")}
+                          aria-invalid={Boolean(errors.details)}
+                          aria-describedby={errors.details ? "details-error" : undefined}
+                          className={`mt-2 resize-none ${fieldClasses}`}
+                        />
+                        {errors.details && (
+                          <p id="details-error" role="alert" className="mt-1.5 text-xs text-red-700">
+                            {errors.details}
+                          </p>
+                        )}
+                      </div>
 
-                <button
-                  type="submit"
-                  className="w-full bg-accent px-7 py-3.5 text-sm font-semibold text-paper transition-colors hover:bg-accent-dark sm:w-auto"
-                >
-                  Send Project Details
-                </button>
+                      <div>
+                        <span className="block text-sm text-ink-soft">
+                          Preferred timing (optional)
+                        </span>
+                        <div className="mt-2 grid grid-cols-2 gap-3">
+                          {timingOptions.map((option) => (
+                            <label key={option} className="relative block cursor-pointer">
+                              <input
+                                type="radio"
+                                name="timing"
+                                value={option}
+                                checked={form.timing === option}
+                                onChange={() =>
+                                  setForm((prev) => ({ ...prev, timing: option }))
+                                }
+                                className="peer sr-only"
+                              />
+                              <span className="block border border-line px-3 py-2.5 text-center text-sm text-ink-soft transition-colors duration-300 peer-checked:border-accent peer-checked:bg-accent peer-checked:text-paper peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2">
+                                {option}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-7 flex gap-3">
+                      <button
+                        type="button"
+                        onClick={goToStep1}
+                        className="border border-line px-7 py-3.5 text-sm font-semibold text-ink transition-colors duration-300 hover:bg-paper-dim"
+                      >
+                        Back
+                      </button>
+                      <button
+                        type="button"
+                        onClick={goToStep3}
+                        className="flex-1 bg-accent px-7 py-3.5 text-sm font-semibold text-paper transition-colors duration-300 hover:bg-accent-dark sm:flex-none"
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </fieldset>
+                )}
+
+                {step === 3 && (
+                  <fieldset>
+                    <legend className="text-lg font-semibold text-ink">
+                      Your Contact Info
+                    </legend>
+
+                    <div className="mt-5 space-y-5">
+                      <div>
+                        <label htmlFor="name" className="block text-sm text-ink-soft">
+                          Name
+                        </label>
+                        <input
+                          id="name"
+                          name="name"
+                          type="text"
+                          autoComplete="name"
+                          value={form.name}
+                          onChange={update("name")}
+                          aria-invalid={Boolean(errors.name)}
+                          aria-describedby={errors.name ? "name-error" : undefined}
+                          className={`mt-2 ${fieldClasses}`}
+                        />
+                        {errors.name && (
+                          <p id="name-error" role="alert" className="mt-1.5 text-xs text-red-700">
+                            {errors.name}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                        <div>
+                          <label htmlFor="phone" className="block text-sm text-ink-soft">
+                            Phone
+                          </label>
+                          <input
+                            id="phone"
+                            name="phone"
+                            type="tel"
+                            autoComplete="tel"
+                            value={form.phone}
+                            onChange={update("phone")}
+                            aria-invalid={Boolean(errors.phone)}
+                            aria-describedby={errors.phone ? "phone-error" : undefined}
+                            className={`mt-2 ${fieldClasses}`}
+                          />
+                          {errors.phone && (
+                            <p id="phone-error" role="alert" className="mt-1.5 text-xs text-red-700">
+                              {errors.phone}
+                            </p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label htmlFor="email" className="block text-sm text-ink-soft">
+                            Email
+                          </label>
+                          <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            autoComplete="email"
+                            value={form.email}
+                            onChange={update("email")}
+                            aria-invalid={Boolean(errors.email)}
+                            aria-describedby={errors.email ? "email-error" : undefined}
+                            className={`mt-2 ${fieldClasses}`}
+                          />
+                          {errors.email && (
+                            <p id="email-error" role="alert" className="mt-1.5 text-xs text-red-700">
+                              {errors.email}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-7 border-t border-line pt-6">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-semibold text-ink">Project summary</p>
+                        <div className="flex gap-3 text-xs">
+                          <button
+                            type="button"
+                            onClick={goToStep1}
+                            className="text-accent underline underline-offset-4"
+                          >
+                            Edit project type
+                          </button>
+                          <button
+                            type="button"
+                            onClick={goToStep2}
+                            className="text-accent underline underline-offset-4"
+                          >
+                            Edit details
+                          </button>
+                        </div>
+                      </div>
+                      <dl className="mt-3 space-y-1.5 text-sm text-ink-soft">
+                        <div className="flex gap-2">
+                          <dt className="font-medium text-ink">Project type:</dt>
+                          <dd>{form.projectType || "Not selected"}</dd>
+                        </div>
+                        <div className="flex gap-2">
+                          <dt className="font-medium text-ink">Location:</dt>
+                          <dd>{form.city || "Not provided"}</dd>
+                        </div>
+                        {form.timing && (
+                          <div className="flex gap-2">
+                            <dt className="font-medium text-ink">Timing:</dt>
+                            <dd>{form.timing}</dd>
+                          </div>
+                        )}
+                        <div>
+                          <dt className="font-medium text-ink">Details:</dt>
+                          <dd className="mt-0.5">{form.details || "Not provided"}</dd>
+                        </div>
+                      </dl>
+                    </div>
+
+                    <div className="mt-7 flex gap-3">
+                      <button
+                        type="button"
+                        onClick={goToStep2}
+                        className="border border-line px-7 py-3.5 text-sm font-semibold text-ink transition-colors duration-300 hover:bg-paper-dim"
+                      >
+                        Back
+                      </button>
+                      <button
+                        type="submit"
+                        className="flex-1 bg-accent px-7 py-3.5 text-sm font-semibold text-paper transition-colors duration-300 hover:bg-accent-dark sm:flex-none"
+                      >
+                        Send Project Details
+                      </button>
+                    </div>
+                  </fieldset>
+                )}
               </form>
             )}
           </div>
