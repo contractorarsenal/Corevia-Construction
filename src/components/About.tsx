@@ -17,7 +17,7 @@ const principles = [
 
 export default function About() {
   return (
-    <section id="about" className="scroll-mt-20 bg-paper-dim py-18 sm:py-24">
+    <section id="about" className="scroll-mt-20 bg-paper-dim py-16 sm:py-20 lg:py-27">
       <div className="mx-auto grid max-w-300 grid-cols-1 gap-12 px-5 sm:px-8 lg:grid-cols-[0.82fr_1fr] lg:items-start lg:gap-16">
         <div className="order-2 h-105 w-full overflow-hidden rounded-2xl lg:order-1 lg:h-115">
           <img

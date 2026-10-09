@@ -22,7 +22,7 @@ export default function Services({ onSelectProject, serviceRequest }: ServicesPr
   }
 
   return (
-    <section id="services" className="scroll-mt-20 bg-paper py-18 sm:py-24">
+    <section id="services" className="scroll-mt-20 bg-paper py-16 sm:py-20 lg:py-27">
       <div className="mx-auto max-w-300 px-5 sm:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_2fr] lg:gap-16">
           <div>

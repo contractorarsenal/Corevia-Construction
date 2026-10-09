@@ -8,16 +8,16 @@ export default function Gallery() {
   return (
     <section
       id="projects"
-      className="scroll-mt-20 border-t border-line bg-paper py-18 sm:py-24"
+      className="scroll-mt-20 bg-accent py-16 sm:py-20 lg:py-27"
     >
       <div className="mx-auto max-w-300 px-5 sm:px-8">
-        <p className="text-xs font-semibold tracking-[0.2em] text-accent">
+        <p className="text-xs font-semibold tracking-[0.2em] text-paper">
           SELECTED WORK
         </p>
-        <h2 className="mt-4 max-w-xl text-3xl font-bold leading-snug text-ink sm:text-4xl">
+        <h2 className="mt-4 max-w-xl text-3xl font-bold leading-snug text-paper sm:text-4xl">
           Real Projects. A Closer Look.
         </h2>
-        <p className="mt-4 max-w-xl text-base leading-relaxed text-ink-soft sm:text-lg">
+        <p className="mt-4 max-w-xl text-base leading-relaxed text-paper sm:text-lg">
           Explore roofing, remodeling, and other work from the Corevia
           portfolio.
         </p>
@@ -29,7 +29,7 @@ export default function Gallery() {
                 type="button"
                 onClick={() => setOpenIndex(index)}
                 aria-label={`View photos: ${image.title}`}
-                className="block aspect-4/3 w-full overflow-hidden rounded-2xl bg-paper-dim focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                className="block aspect-4/3 w-full overflow-hidden rounded-2xl bg-paper/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-accent"
               >
                 <img
                   src={image.src}
@@ -41,12 +41,12 @@ export default function Gallery() {
                 />
               </button>
 
-              <div className="mt-3 flex items-center justify-between border-b border-line pb-3">
-                <p className="text-base font-semibold text-ink">{image.title}</p>
+              <div className="mt-3 flex items-center justify-between border-b border-paper/25 pb-3">
+                <p className="text-base font-semibold text-paper">{image.title}</p>
                 <button
                   type="button"
                   onClick={() => setOpenIndex(index)}
-                  className="flex items-center gap-1.5 text-sm font-medium text-accent transition-colors duration-300 hover:text-accent-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                  className="flex items-center gap-1.5 text-sm font-medium text-paper transition-colors duration-300 hover:text-paper/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-accent"
                 >
                   View Photos
                   <svg

@@ -77,7 +77,7 @@ export default function Header() {
         <div className="hidden md:block">
           <a
             href={business.phoneHref}
-            className="bg-accent px-5 py-2.5 text-sm font-semibold text-paper transition-colors duration-300 hover:bg-accent-dark"
+            className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-paper transition-colors duration-300 hover:bg-accent-dark"
           >
             Call Now
           </a>
@@ -129,7 +129,7 @@ export default function Header() {
           </ul>
           <a
             href={business.phoneHref}
-            className="mt-4 block bg-accent px-5 py-3 text-center text-sm font-semibold text-paper"
+            className="mt-4 block rounded-xl bg-accent px-5 py-3 text-center text-sm font-semibold text-paper"
           >
             Call Now
           </a>

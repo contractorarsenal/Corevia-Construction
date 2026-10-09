@@ -105,11 +105,11 @@ export default function Contact({ presetProjectType }: ContactProps) {
   };
 
   return (
-    <section id="contact" className="scroll-mt-20 bg-ink py-18 sm:py-24">
+    <section id="contact" className="scroll-mt-20 bg-accent py-16 sm:py-20 lg:py-27">
       <div className="mx-auto max-w-300 px-5 sm:px-8">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div>
-            <p className="text-xs font-semibold tracking-[0.2em] text-accent-light">
+            <p className="text-xs font-semibold tracking-[0.2em] text-paper">
               LET&rsquo;S GET STARTED
             </p>
             <h2 className="mt-4 text-3xl font-bold leading-snug text-paper sm:text-4xl">
@@ -117,22 +117,22 @@ export default function Contact({ presetProjectType }: ContactProps) {
               <br />
               Starts Here.
             </h2>
-            <p className="mt-5 max-w-sm text-base leading-relaxed text-paper/80">
+            <p className="mt-5 max-w-sm text-base leading-relaxed text-paper">
               Choose your project type and tell us what you have in mind.
               Still exploring your options? That&rsquo;s a good place to
               start.
             </p>
 
-            <div className="mt-10 space-y-3">
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <a
                 href={business.phoneHref}
-                className="inline-flex w-fit items-center gap-2 border border-paper/25 px-5 py-3 text-sm font-medium text-paper transition-colors duration-300 hover:border-paper/50"
+                className="inline-flex h-13 items-center justify-center rounded-xl bg-paper px-6 text-sm font-semibold text-accent transition-colors duration-300 hover:bg-paper/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-accent"
               >
                 Call Our Team
               </a>
               <a
                 href={business.emailHref}
-                className="block w-fit items-center gap-2 border border-paper/25 px-5 py-3 text-sm font-medium text-paper transition-colors duration-300 hover:border-paper/50"
+                className="inline-flex h-13 items-center justify-center rounded-xl border border-paper/70 px-6 text-sm font-semibold text-paper transition-colors duration-300 hover:border-paper hover:bg-paper/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-accent"
               >
                 Email Us
               </a>
