@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import logo from "../assets/images/logo.jpg";
+import logo from "../assets/images/logo-transparent.png";
 import { business } from "../data/business";
 
 const navLinks = [
@@ -43,21 +43,23 @@ export default function Header() {
     >
       <div
         className={`mx-auto flex max-w-300 items-center justify-between px-5 transition-all duration-300 sm:px-8 ${
-          scrolled ? "py-3" : "py-5"
+          scrolled ? "py-2.5" : "py-2.5 sm:py-3"
         }`}
       >
-        <a href="#top" className="flex items-center" aria-label={business.name}>
-          <span className="flex items-center bg-paper p-1.5">
-            <img
-              src={logo}
-              alt={business.name}
-              width={168}
-              height={133}
-              className={`w-auto transition-[height] duration-300 ${
-                scrolled ? "h-8" : "h-9"
-              }`}
-            />
-          </span>
+        <a
+          href="#top"
+          className="flex items-center rounded-sm bg-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+          aria-label={business.name}
+        >
+          <img
+            src={logo}
+            alt={business.name}
+            width={403}
+            height={320}
+            className={`w-auto object-contain transition-all duration-300 ${
+              scrolled ? "h-13 sm:h-13.5" : "h-13 sm:h-16"
+            }`}
+          />
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
