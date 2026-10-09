@@ -6,7 +6,6 @@ import fenceProject from "../assets/images/fence-project.jpg";
 import finishedRoof01 from "../assets/images/finished-roof-01.jpg";
 import finishedRoof02 from "../assets/images/finished-roof-02.jpg";
 import roofBackyardView from "../assets/images/roof-backyard-view.jpg";
-import roofFrontView from "../assets/images/roof-front-view.jpg";
 
 export type GalleryImage = {
   src: string;
@@ -24,14 +23,6 @@ export const heroImage: GalleryImage = {
   height: 1080,
 };
 
-export const servicesImage: GalleryImage = {
-  src: roofFrontView,
-  alt: "Front view of a home with a newly completed roof",
-  caption: "Roofing",
-  width: 960,
-  height: 540,
-};
-
 export const aboutImage: GalleryImage = {
   src: bathroomRemodel01,
   alt: "Finished bathroom remodel with new fixtures and tile work",
@@ -40,7 +31,7 @@ export const aboutImage: GalleryImage = {
   height: 1440,
 };
 
-export const featuredWork: GalleryImage[] = [
+export const projectGallery: GalleryImage[] = [
   {
     src: finishedRoof02,
     alt: "Wide view of a completed roofing project with dark architectural shingles",

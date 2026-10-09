@@ -2,9 +2,9 @@ import { aboutImage } from "../data/gallery";
 
 export default function About() {
   return (
-    <section id="about" className="scroll-mt-20 bg-paper py-20 sm:py-28">
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16">
-        <div className="order-2 aspect-[4/5] w-full max-w-sm overflow-hidden lg:order-1">
+    <section id="about" className="scroll-mt-18 bg-paper py-18 sm:py-24">
+      <div className="mx-auto grid max-w-300 grid-cols-1 gap-12 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16">
+        <div className="order-2 aspect-4/5 w-full max-w-sm overflow-hidden bg-paper-dim lg:order-1">
           <img
             src={aboutImage.src}
             alt={aboutImage.alt}
@@ -16,21 +16,18 @@ export default function About() {
         </div>
 
         <div className="order-1 lg:order-2">
-          <h2 className="max-w-lg font-serif text-3xl leading-snug text-ink sm:text-4xl">
-            A Family-Owned Company.
-            <br />
-            A Personal Approach.
+          <h2 className="text-3xl font-bold leading-snug text-ink sm:text-4xl">
+            Family-Owned. Based in Tacoma.
           </h2>
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-stone sm:text-lg">
-            Corevia Construction Group Inc. is a family-owned construction
-            company based in Tacoma, serving homeowners across King and
-            Pierce Counties. We believe quality craftsmanship, honest
-            communication, and dependable service belong at the center of
-            every project.
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-ink-soft sm:text-lg">
+            Corevia Construction Group Inc. serves King and Pierce Counties
+            with roofing, remodeling, additions, ADUs, and restoration. Our
+            approach centers on quality craftsmanship, honest communication,
+            and dependable service.
           </p>
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-stone sm:text-lg">
-            From roofing and remodeling to additions, ADUs, and restoration,
-            we&rsquo;re here to help you build with confidence.
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-ink-soft sm:text-lg">
+            Whether you&rsquo;re updating an existing space or planning
+            something new, we&rsquo;d like to hear about your project.
           </p>
         </div>
       </div>

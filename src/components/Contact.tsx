@@ -55,44 +55,66 @@ export default function Contact() {
   };
 
   const fieldClasses =
-    "w-full border border-paper/25 bg-transparent px-4 py-3 text-paper placeholder:text-paper/40 focus:border-accent-light focus:outline-none";
+    "w-full border border-paper/25 bg-paper/8 px-4 py-3 text-paper placeholder:text-paper/45 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40";
 
   return (
-    <section id="contact" className="scroll-mt-20 bg-ink py-20 text-paper sm:py-28">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+    <section id="contact" className="scroll-mt-18 bg-ink py-18 text-paper sm:py-24">
+      <div className="mx-auto max-w-300 px-5 sm:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div>
-            <h2 className="font-serif text-3xl leading-snug sm:text-4xl">
-              Let&rsquo;s Talk About Your Project.
+            <h2 className="text-3xl font-bold leading-snug text-paper sm:text-4xl">
+              Tell Us About Your Project
             </h2>
             <p className="mt-5 max-w-sm text-base leading-relaxed text-paper/80">
-              Tell us what you&rsquo;re planning and where your property is
-              located.
+              Located in King or Pierce County? Share a few details about
+              the work you have in mind.
             </p>
 
-            <div className="mt-8 space-y-3 text-sm">
-              <a
-                href={business.phoneHref}
-                className="block w-fit border-b border-accent-light/60 pb-0.5 text-paper transition-colors hover:border-paper"
-              >
-                Call Now — {business.phone}
-              </a>
-              <a
-                href={business.emailHref}
-                className="block w-fit border-b border-accent-light/60 pb-0.5 text-paper transition-colors hover:border-paper"
-              >
-                Email Us — {business.email}
-              </a>
-            </div>
+            <dl className="mt-10 space-y-5 text-sm">
+              <div>
+                <dt className="text-paper/55">Phone</dt>
+                <dd className="mt-1">
+                  <a
+                    href={business.phoneHref}
+                    className="text-base font-medium text-paper underline decoration-paper/30 underline-offset-4 hover:decoration-paper"
+                  >
+                    {business.phone}
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-paper/55">Email</dt>
+                <dd className="mt-1">
+                  <a
+                    href={business.emailHref}
+                    className="text-base font-medium text-paper underline decoration-paper/30 underline-offset-4 hover:decoration-paper"
+                  >
+                    {business.email}
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-paper/55">Based in</dt>
+                <dd className="mt-1 text-base text-paper">
+                  Tacoma, Washington
+                </dd>
+              </div>
+              <div>
+                <dt className="text-paper/55">Serving</dt>
+                <dd className="mt-1 text-base text-paper">
+                  King County and Pierce County
+                </dd>
+              </div>
+            </dl>
           </div>
 
           <div>
             {submitted ? (
               <div
                 role="status"
-                className="border border-accent-light/40 bg-paper/5 p-6 sm:p-8"
+                className="border border-paper/20 bg-paper/5 p-6 sm:p-8"
               >
-                <h3 className="font-serif text-xl text-paper">
+                <h3 className="text-xl font-semibold text-paper">
                   This is a demo form.
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-paper/80">
@@ -102,13 +124,13 @@ export default function Contact() {
                 <div className="mt-5 space-y-2 text-sm">
                   <a
                     href={business.phoneHref}
-                    className="block w-fit border-b border-accent-light/60 pb-0.5 text-paper"
+                    className="block w-fit text-paper underline decoration-paper/30 underline-offset-4"
                   >
                     Call Now — {business.phone}
                   </a>
                   <a
                     href={business.emailHref}
-                    className="block w-fit border-b border-accent-light/60 pb-0.5 text-paper"
+                    className="block w-fit text-paper underline decoration-paper/30 underline-offset-4"
                   >
                     Email Us — {business.email}
                   </a>
@@ -213,11 +235,11 @@ export default function Contact() {
                     }
                     className={`mt-2 ${fieldClasses} bg-ink`}
                   >
-                    <option value="" disabled className="text-ink">
+                    <option value="" disabled className="bg-paper text-ink">
                       Select a project type
                     </option>
                     {projectTypes.map((type) => (
-                      <option key={type} value={type} className="text-ink">
+                      <option key={type} value={type} className="bg-paper text-ink">
                         {type}
                       </option>
                     ))}
@@ -252,7 +274,7 @@ export default function Contact() {
 
                 <button
                   type="submit"
-                  className="w-full bg-accent px-7 py-3.5 text-sm font-medium text-paper transition-colors hover:bg-accent-light sm:w-auto"
+                  className="w-full bg-accent px-7 py-3.5 text-sm font-semibold text-paper transition-colors hover:bg-accent-dark sm:w-auto"
                 >
                   Send Project Details
                 </button>

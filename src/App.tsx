@@ -1,11 +1,9 @@
 import About from "./components/About";
 import Contact from "./components/Contact";
-import FeaturedWork from "./components/FeaturedWork";
+import Gallery from "./components/Gallery";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import IntroStrip from "./components/IntroStrip";
-import ServiceArea from "./components/ServiceArea";
 import Services from "./components/Services";
 
 function App() {
@@ -14,11 +12,9 @@ function App() {
       <Header />
       <main>
         <Hero />
-        <IntroStrip />
         <Services />
-        <FeaturedWork />
+        <Gallery />
         <About />
-        <ServiceArea />
         <Contact />
       </main>
       <Footer />

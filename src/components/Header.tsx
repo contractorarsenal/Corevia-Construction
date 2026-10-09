@@ -4,7 +4,7 @@ import { business } from "../data/business";
 
 const navLinks = [
   { label: "Services", href: "#services" },
-  { label: "Our Work", href: "#work" },
+  { label: "Projects", href: "#projects" },
   { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
 ];
@@ -28,19 +28,16 @@ export default function Header() {
   }, [menuOpen]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-ink/10 bg-ink">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:h-20 sm:px-8">
-        <a href="#top" className="flex items-center gap-3">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-paper">
+      <div className="mx-auto flex h-16 max-w-300 items-center justify-between px-5 sm:px-8">
+        <a href="#top" className="flex items-center" aria-label={business.name}>
           <img
             src={logo}
-            alt="Corevia Construction Group logo"
-            width={44}
-            height={44}
-            className="h-10 w-10 rounded-full sm:h-11 sm:w-11"
+            alt={business.name}
+            width={168}
+            height={133}
+            className="h-11 w-auto sm:h-12"
           />
-          <span className="font-serif text-lg text-paper sm:text-xl">
-            Corevia
-          </span>
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -48,7 +45,7 @@ export default function Header() {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-paper/80 transition-colors hover:text-paper"
+              className="text-sm font-medium text-ink-soft transition-colors hover:text-ink"
             >
               {link.label}
             </a>
@@ -58,7 +55,7 @@ export default function Header() {
         <div className="hidden md:block">
           <a
             href={business.phoneHref}
-            className="border border-accent-light/60 px-5 py-2.5 text-sm text-paper transition-colors hover:border-accent-light hover:bg-accent-dark"
+            className="bg-accent px-5 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-accent-dark"
           >
             Call Now
           </a>
@@ -66,7 +63,7 @@ export default function Header() {
 
         <button
           type="button"
-          className="flex h-10 w-10 items-center justify-center text-paper md:hidden"
+          className="flex h-10 w-10 items-center justify-center text-ink md:hidden"
           aria-expanded={menuOpen}
           aria-controls="mobile-nav"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -93,15 +90,15 @@ export default function Header() {
       {menuOpen && (
         <nav
           id="mobile-nav"
-          className="border-t border-paper/10 bg-ink px-5 pb-6 pt-2 md:hidden"
+          className="border-t border-line bg-paper px-5 pb-6 pt-2 md:hidden"
         >
-          <ul className="flex flex-col divide-y divide-paper/10">
+          <ul className="flex flex-col divide-y divide-line">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="block py-4 text-base text-paper/90"
+                  className="block py-4 text-base font-medium text-ink"
                 >
                   {link.label}
                 </a>
@@ -110,7 +107,7 @@ export default function Header() {
           </ul>
           <a
             href={business.phoneHref}
-            className="mt-4 block border border-accent-light/60 px-5 py-3 text-center text-sm text-paper"
+            className="mt-4 block bg-accent px-5 py-3 text-center text-sm font-semibold text-paper"
           >
             Call Now — {business.phone}
           </a>

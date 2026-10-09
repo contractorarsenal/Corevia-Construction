@@ -5,22 +5,20 @@ const year = new Date().getFullYear();
 
 export default function Footer() {
   return (
-    <footer className="bg-ink py-14 text-paper/80">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+    <footer className="bg-ink py-12 text-paper/80">
+      <div className="mx-auto max-w-300 px-5 sm:px-8">
         <div className="flex flex-col gap-10 sm:flex-row sm:justify-between">
-          <div className="flex items-start gap-3">
+          <div>
             <img
               src={logo}
-              alt="Corevia Construction Group logo"
-              width={40}
-              height={40}
-              className="h-10 w-10 rounded-full"
+              alt={business.name}
+              width={168}
+              height={133}
+              className="h-10 w-auto"
             />
-            <div>
-              <p className="font-serif text-lg text-paper">{business.name}</p>
-              <p className="mt-1 text-sm">{business.address.line1}</p>
-              <p className="text-sm">{business.address.line2}</p>
-            </div>
+            <p className="mt-4 text-sm text-paper">{business.name}</p>
+            <p className="mt-1 text-sm">{business.address.line1}</p>
+            <p className="text-sm">{business.address.line2}</p>
           </div>
 
           <div className="space-y-1.5 text-sm">
