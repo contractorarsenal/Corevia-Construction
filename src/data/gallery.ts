@@ -10,23 +10,22 @@ import roofBackyardView from "../assets/images/roof-backyard-view.jpg";
 export type GalleryImage = {
   src: string;
   alt: string;
-  caption: string;
+  title: string;
+  objectPosition: string;
   width: number;
   height: number;
 };
 
-export const heroImage: GalleryImage = {
+export const heroImage = {
   src: roofBackyardView,
   alt: "Newly completed asphalt shingle roof viewed from the backyard, under a clear sky",
-  caption: "Roofing",
   width: 1920,
   height: 1080,
 };
 
-export const aboutImage: GalleryImage = {
+export const aboutImage = {
   src: bathroomRemodel01,
   alt: "Finished bathroom remodel with new fixtures and tile work",
-  caption: "Bathroom Remodel",
   width: 1079,
   height: 1440,
 };
@@ -35,42 +34,48 @@ export const projectGallery: GalleryImage[] = [
   {
     src: finishedRoof02,
     alt: "Wide view of a completed roofing project with dark architectural shingles",
-    caption: "Roofing",
+    title: "Roofing Project",
+    objectPosition: "object-top",
     width: 1920,
     height: 1440,
   },
   {
     src: bathroomRemodel02,
     alt: "Finished bathroom remodel, portrait view of vanity and tile",
-    caption: "Bathroom Remodel",
+    title: "Bathroom Remodel",
+    objectPosition: "object-center",
     width: 1536,
     height: 2048,
   },
   {
     src: fenceProject,
     alt: "Finished wood fence project along a property line",
-    caption: "Fence Project",
+    title: "Fence Project",
+    objectPosition: "object-center",
     width: 960,
     height: 548,
   },
   {
     src: commercialProject,
     alt: "Commercial construction project exterior",
-    caption: "Commercial Work",
+    title: "Commercial Project",
+    objectPosition: "object-center",
     width: 1920,
     height: 1080,
   },
   {
     src: finishedRoof01,
     alt: "Close view of a completed roof installation",
-    caption: "Roofing",
+    title: "Roofing Detail",
+    objectPosition: "object-top",
     width: 1284,
     height: 1196,
   },
   {
     src: exteriorProject,
     alt: "Exterior view of a completed residential project",
-    caption: "Exterior Project",
+    title: "Exterior Project",
+    objectPosition: "object-center",
     width: 1588,
     height: 2048,
   },

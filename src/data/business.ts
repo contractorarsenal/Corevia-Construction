@@ -23,34 +23,46 @@ export const projectTypes = [
 
 export type ProjectType = (typeof projectTypes)[number];
 
-export const services: {
+export type Service = {
+  number: string;
   title: string;
-  description: string;
   projectType: ProjectType;
-}[] = [
+  description: string;
+  actionLabel: string;
+};
+
+export const services: Service[] = [
   {
+    number: "01",
     title: "Roofing",
-    description:
-      "Roofing services for homeowners in Tacoma and across King and Pierce Counties. Ask about a full replacement, repairing storm damage, or addressing a persistent leak.",
     projectType: "Roofing",
+    description:
+      "Planning a roofing project? Tell us about your property, the condition of your roof, and what you want to address.",
+    actionLabel: "Discuss Your Roof",
   },
   {
+    number: "02",
     title: "Remodeling",
-    description:
-      "Update your bathroom and other living spaces with a focus on craftsmanship and the finished details. Share your plans for a bathroom refresh, a kitchen update, or another interior space.",
     projectType: "Remodeling",
+    description:
+      "Ready to update the spaces you use every day? Share your ideas for your bathroom, kitchen, or another room in your home.",
+    actionLabel: "Plan Your Remodel",
   },
   {
+    number: "03",
     title: "Additions & ADUs",
-    description:
-      "Planning more room? Talk with us about your home addition or accessory dwelling unit. Discuss a new addition, a backyard ADU, or extra living space for family.",
     projectType: "Addition / ADU",
+    description:
+      "Need more living space? Start a conversation about a home addition or accessory dwelling unit.",
+    actionLabel: "Explore Your Project",
   },
   {
+    number: "04",
     title: "Restoration",
-    description:
-      "Tell us about the condition of your property and the restoration work you need. Describe storm damage, wear over time, or repairs you have been putting off.",
     projectType: "Restoration",
+    description:
+      "Have an area of your property that needs attention? Tell us what happened and what you are looking to restore.",
+    actionLabel: "Discuss Restoration",
   },
 ];
 

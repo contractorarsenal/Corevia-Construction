@@ -29,7 +29,9 @@ const initialState: FormState = {
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const fieldClasses =
-  "w-full border border-line bg-paper px-4 py-3 text-ink placeholder:text-stone focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
+  "w-full border border-line bg-paper px-4 py-3.5 text-ink placeholder:text-stone focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30";
+
+const progressSteps = ["Project", "Details", "Contact"] as const;
 
 type ContactProps = {
   presetProjectType: ProjectType | null;
@@ -105,15 +107,20 @@ export default function Contact({ presetProjectType }: ContactProps) {
   return (
     <section id="contact" className="scroll-mt-20 bg-ink py-18 sm:py-24">
       <div className="mx-auto max-w-300 px-5 sm:px-8">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div>
-            <h2 className="text-3xl font-bold leading-snug text-paper sm:text-4xl">
-              Let&rsquo;s Put Your Project in Motion.
+            <p className="text-xs font-semibold tracking-[0.2em] text-accent-light">
+              LET&rsquo;S GET STARTED
+            </p>
+            <h2 className="mt-4 text-3xl font-bold leading-snug text-paper sm:text-4xl">
+              Your Next Project
+              <br />
+              Starts Here.
             </h2>
             <p className="mt-5 max-w-sm text-base leading-relaxed text-paper/80">
-              Tell us what you have in mind. Start with the type of
-              project, share a few details, and let&rsquo;s take it from
-              there.
+              Choose your project type and tell us what you have in mind.
+              Still exploring your options? That&rsquo;s a good place to
+              start.
             </p>
 
             <div className="mt-10 space-y-3">
@@ -132,26 +139,26 @@ export default function Contact({ presetProjectType }: ContactProps) {
             </div>
           </div>
 
-          <div className="bg-paper p-6 sm:p-8">
+          <div className="rounded-[20px] bg-paper p-6 sm:p-10">
             {submitted ? (
               <div role="status">
                 <h3 className="text-xl font-semibold text-ink">
-                  This is a demo form.
+                  This is a preview form.
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-ink-soft">
-                  No inquiry was actually sent. To discuss a real project,
+                  No request was actually sent. To discuss a real project,
                   please reach out directly.
                 </p>
-                <div className="mt-5 space-y-2 text-sm">
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
                   <a
                     href={business.phoneHref}
-                    className="block w-fit text-accent underline underline-offset-4"
+                    className="inline-flex h-13 items-center justify-center rounded-lg bg-accent px-6 text-sm font-semibold text-paper transition-colors duration-300 hover:bg-accent-dark"
                   >
                     Call Our Team
                   </a>
                   <a
                     href={business.emailHref}
-                    className="block w-fit text-accent underline underline-offset-4"
+                    className="inline-flex h-13 items-center justify-center rounded-lg border border-line px-6 text-sm font-semibold text-ink transition-colors duration-300 hover:bg-paper-dim"
                   >
                     Email Us
                   </a>
@@ -166,21 +173,36 @@ export default function Contact({ presetProjectType }: ContactProps) {
               </div>
             ) : (
               <form noValidate onSubmit={handleSubmit}>
-                <div aria-live="polite" className="mb-6 flex items-center justify-between">
-                  <p className="text-sm font-medium text-stone">
-                    Step {step} of 3
-                  </p>
-                  <div className="h-1 w-24 overflow-hidden bg-paper-dim">
-                    <div
-                      className="h-full bg-accent transition-all duration-300"
-                      style={{ width: `${(step / 3) * 100}%` }}
-                    />
-                  </div>
+                <div aria-live="polite" className="mb-8 flex gap-2">
+                  {progressSteps.map((label, i) => {
+                    const stepNum = i + 1;
+                    const isActive = step === stepNum;
+                    const isDone = step > stepNum;
+                    return (
+                      <div key={label} className="flex-1">
+                        <p
+                          className={`text-xs font-semibold ${
+                            isActive
+                              ? "text-accent"
+                              : isDone
+                                ? "text-ink"
+                                : "text-stone"
+                          }`}
+                        >
+                          {stepNum}. {label}
+                        </p>
+                        <span
+                          className={`mt-2 block h-1 rounded-full transition-colors duration-300 ${
+                            isActive || isDone ? "bg-accent" : "bg-line"
+                          }`}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
 
-                <p className="mb-5 text-xs text-stone">
-                  Demo form. No backend is connected. Please call or email
-                  to discuss your project.
+                <p className="mb-6 text-xs text-stone">
+                  Preview form. To discuss a project, please call or email.
                 </p>
 
                 {step === 1 && (
@@ -192,9 +214,14 @@ export default function Contact({ presetProjectType }: ContactProps) {
                       What kind of project are you planning?
                     </p>
 
-                    <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    <div className="mt-5 grid grid-cols-2 gap-3">
                       {projectTypes.map((type) => (
-                        <label key={type} className="relative block cursor-pointer">
+                        <label
+                          key={type}
+                          className={`relative block cursor-pointer ${
+                            type === "Other" ? "col-span-2" : ""
+                          }`}
+                        >
                           <input
                             type="radio"
                             name="projectType"
@@ -205,8 +232,20 @@ export default function Contact({ presetProjectType }: ContactProps) {
                             }
                             className="peer sr-only"
                           />
-                          <span className="block border border-line px-3 py-3 text-center text-sm font-medium text-ink-soft transition-colors duration-300 peer-checked:border-accent peer-checked:bg-accent peer-checked:text-paper peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2">
+                          <span className="flex items-center justify-between gap-2 border border-line px-4 py-3.5 text-sm font-medium text-ink-soft transition-colors duration-300 peer-checked:border-accent peer-checked:bg-accent/8 peer-checked:text-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2">
                             {type}
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              aria-hidden="true"
+                              className="opacity-0 peer-checked:opacity-100"
+                            >
+                              <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
                           </span>
                         </label>
                       ))}
@@ -220,9 +259,9 @@ export default function Contact({ presetProjectType }: ContactProps) {
                     <button
                       type="button"
                       onClick={goToStep2}
-                      className="mt-7 w-full bg-accent px-7 py-3.5 text-sm font-semibold text-paper transition-colors duration-300 hover:bg-accent-dark sm:w-auto"
+                      className="mt-7 inline-flex h-13 w-full items-center justify-center rounded-lg bg-accent px-7 text-sm font-semibold text-paper transition-colors duration-300 hover:bg-accent-dark sm:w-auto"
                     >
-                      Next
+                      Continue
                     </button>
                   </fieldset>
                 )}
@@ -294,7 +333,7 @@ export default function Contact({ presetProjectType }: ContactProps) {
                                 }
                                 className="peer sr-only"
                               />
-                              <span className="block border border-line px-3 py-2.5 text-center text-sm text-ink-soft transition-colors duration-300 peer-checked:border-accent peer-checked:bg-accent peer-checked:text-paper peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2">
+                              <span className="block border border-line px-3 py-3 text-center text-sm text-ink-soft transition-colors duration-300 peer-checked:border-accent peer-checked:bg-accent/8 peer-checked:text-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2">
                                 {option}
                               </span>
                             </label>
@@ -307,16 +346,16 @@ export default function Contact({ presetProjectType }: ContactProps) {
                       <button
                         type="button"
                         onClick={goToStep1}
-                        className="border border-line px-7 py-3.5 text-sm font-semibold text-ink transition-colors duration-300 hover:bg-paper-dim"
+                        className="inline-flex h-13 items-center justify-center rounded-lg border border-line px-7 text-sm font-semibold text-ink transition-colors duration-300 hover:bg-paper-dim"
                       >
                         Back
                       </button>
                       <button
                         type="button"
                         onClick={goToStep3}
-                        className="flex-1 bg-accent px-7 py-3.5 text-sm font-semibold text-paper transition-colors duration-300 hover:bg-accent-dark sm:flex-none"
+                        className="inline-flex h-13 flex-1 items-center justify-center rounded-lg bg-accent px-7 text-sm font-semibold text-paper transition-colors duration-300 hover:bg-accent-dark sm:flex-none"
                       >
-                        Next
+                        Continue
                       </button>
                     </div>
                   </fieldset>
@@ -444,13 +483,13 @@ export default function Contact({ presetProjectType }: ContactProps) {
                       <button
                         type="button"
                         onClick={goToStep2}
-                        className="border border-line px-7 py-3.5 text-sm font-semibold text-ink transition-colors duration-300 hover:bg-paper-dim"
+                        className="inline-flex h-13 items-center justify-center rounded-lg border border-line px-7 text-sm font-semibold text-ink transition-colors duration-300 hover:bg-paper-dim"
                       >
                         Back
                       </button>
                       <button
                         type="submit"
-                        className="flex-1 bg-accent px-7 py-3.5 text-sm font-semibold text-paper transition-colors duration-300 hover:bg-accent-dark sm:flex-none"
+                        className="inline-flex h-13 flex-1 items-center justify-center rounded-lg bg-accent px-7 text-sm font-semibold text-paper transition-colors duration-300 hover:bg-accent-dark sm:flex-none"
                       >
                         Send Project Details
                       </button>

@@ -8,21 +8,36 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Services from "./components/Services";
 
+type ServiceRequest = {
+  index: number;
+  key: number;
+};
+
 function App() {
   const [requestedProjectType, setRequestedProjectType] =
     useState<ProjectType | null>(null);
+  const [serviceRequest, setServiceRequest] = useState<ServiceRequest | null>(
+    null,
+  );
 
   return (
     <div className="min-h-screen bg-paper text-ink">
       <Header />
       <main>
         <Hero />
-        <Services onSelectProject={setRequestedProjectType} />
+        <Services
+          onSelectProject={setRequestedProjectType}
+          serviceRequest={serviceRequest}
+        />
         <Gallery />
         <About />
         <Contact presetProjectType={requestedProjectType} />
       </main>
-      <Footer />
+      <Footer
+        onSelectService={(index) =>
+          setServiceRequest({ index, key: Date.now() })
+        }
+      />
     </div>
   );
 }
